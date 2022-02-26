@@ -164,6 +164,7 @@ def calculateWeight(word, green_string = "-----"):
     # sum letter weights
     weight_sum = 0
     previous_letters = []
+    
     for pos in range(5):
         letter = word[pos]
         index = ord(letter) - 97
