@@ -187,7 +187,7 @@ def makeGuesses():
             for guess in sorted(valid_guesses, key=getKey, reverse=True):
                 write_string = guess[0] + ", " + str(guess[1]) + "\n"
                 possible_guesses_file.write(write_string)
-                print(write_string)
+                print(guess[0] + ", " + str(guess[1]))
             print(guesses_count, "possible guesses were found.")
             possible_guesses_file.close()
             print()
