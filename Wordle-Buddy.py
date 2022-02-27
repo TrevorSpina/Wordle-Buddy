@@ -147,6 +147,7 @@ def makeGuesses():
                 #print("now checking " + word[:5] + "...")
                 # check if word is valid guess
                 # add to file if it is
+                trimmed_word = word[:5]
                 valid_guess = True
                 for pos in range(5):
                     # validate against green letters
@@ -178,12 +179,15 @@ def makeGuesses():
 
                 if valid_guess:
                     # add tuple to list
-                    valid_guesses.append((word[:5], calculateWeight(word[:5], green_string=green_letters_string)))
+                    valid_guesses.append((trimmed_word, calculateWeight(trimmed_word, green_string=green_letters_string)))
 
                     guesses_count += 1
+            print()
+            print("possible guesses:")
             for guess in sorted(valid_guesses, key=getKey, reverse=True):
                 write_string = guess[0] + ", " + str(guess[1]) + "\n"
                 possible_guesses_file.write(write_string)
+                print(write_string)
             print(guesses_count, "possible guesses were found.")
             possible_guesses_file.close()
             print()
@@ -231,11 +235,12 @@ def bestFirstGuess():
     maxWord = ""
     print("finding best first guess...")
     for word in five_letter_words_file:
-        curr_weight = calculateWeight(word[:5])
+        trimmed_word = word[:5]
+        curr_weight = calculateWeight(trimmed_word)
         if curr_weight > maxWeight:
             maxWeight = curr_weight
             maxWord = word
-    print("The best first guess is:", maxWord[:5] + ": " + str(maxWeight))
+    print("The best first guess is:", maxWord + ": " + str(maxWeight))
     five_letter_words_file.close()
 
 def main():
