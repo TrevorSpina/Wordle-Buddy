@@ -264,6 +264,17 @@ def generateTopGuesses(count):
 def formatWordTupleString(word, weight):
     return word + ", " + str(weight)
 
+def printOptions():
+    print()
+    print("-------------------------------------------------------------------------------------------------")
+    print("|  Options:                                                                                     |")
+    print("|    Type \"first guess\" to get a \"good\" first guess.                                            |")
+    print("|    Type \"smart guess\" to generate a list of possible guesses given what you already know.     |")
+    print("|    Type \"help\" to see these options again.                                                    |")
+    print("|    Type \"quit\" to quit.                                                                       |")
+    print("-------------------------------------------------------------------------------------------------")
+    print()
+
 def main():
     print()
     print(" ___ ___ _______ _______ ______   ___     _______     _______  ___ ___ ______   ______  ___ ___ ")
@@ -275,16 +286,10 @@ def main():
     print("`--- ---`-------`--- ---`------' `-------`-------'   `-------'`-------`------' `------'  `---'  ")
     print("")
     print("Wordle Buddy will help you solve today's Wordle!")
+    printOptions()
 
     while(True):
-        print()
-        print("-------------------------------------------------------------------------------------------------")
-        print("|  Options:                                                                                     |")
-        print("|    Type \"first guess\" to get a \"good\" first guess.                                              |")
-        print("|    Type \"smart guess\" to generate a list of possible guesses given what you already know.     |")
-        print("|    Type \"quit\" to quit.                                                                       |")
-        print("-------------------------------------------------------------------------------------------------")
-        print()
+
         usr_input = input().lower()
         if usr_input == "first guess":
             top_guesses = generateTopGuesses(10)
@@ -302,6 +307,8 @@ def main():
             print("Y88b  d88P 888  888 Y88b 888 888  888")
             print(" \"Y8888P\"  888  888  \"Y88888 888  888 ")
             print()
+        elif usr_input == "help":
+            printOptions()
         elif usr_input == "quit":
             break
 
