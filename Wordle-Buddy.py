@@ -215,7 +215,7 @@ def makeGuesses():
 
 def calculateWeight(word, green_string = "-----"):
     # sum letter weights
-    weight_sum = 0
+    weight = 0
     previous_letters = []
     for pos in range(5):
         letter = word[pos]
@@ -226,12 +226,12 @@ def calculateWeight(word, green_string = "-----"):
                 # letter does not occur previously in the word
                 if green_string[pos] != letter:
                     # letter is not already known
-                    weight_sum += letter_frequencies[index]
+                    weight += letter_frequencies[index]
             else:
                 # letter occurs previously in the word
-                weight_sum *= 0.25
+                weight *= 0.25
         previous_letters.append(letter)
-    return weight_sum
+    return round(weight, 2)
 
 def bestFirstGuess(best_guesses):
     random.seed()
