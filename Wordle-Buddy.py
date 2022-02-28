@@ -1,4 +1,5 @@
 from typing import List, Any
+import random
 
 # lookup table of letter frequencies in the english language.
 # in alphabetical order i.e. index 0 is the frequency of A and
@@ -74,6 +75,7 @@ def makeGuesses():
                 break
             valid_letters = valid_letters_string.split(",")
             for letter in valid_letters:
+                letter = letter.strip()
                 if len(letter) != 1:
                     letters_valid = False
                     print("There must be a comma between each letter")
@@ -187,14 +189,14 @@ def makeGuesses():
             for guess in sorted(valid_guesses, key=getKey, reverse=True):
                 write_string = guess[0] + ", " + str(guess[1]) + "\n"
                 possible_guesses_file.write(write_string)
-                print(guess[0] + ", " + str(guess[1]))
+                print(formatWordTupleString(guess[0], guess[1]))
             print(guesses_count, "possible guesses were found.")
             possible_guesses_file.close()
             print()
             print("Do you want to generate another set of guesses? (y/n)")
-            again_input = input().lower()
             again_valid = False
             while again_valid == False:
+                again_input = input().lower()
                 if again_input == "y":
                     again_valid = True
                 elif again_input == "n":
@@ -204,6 +206,8 @@ def makeGuesses():
                     again_valid = True
                     should_quit = True
                     break
+                elif again_input == "snuh":
+                    print("snuh")
                 else:
                     print("please enter y or n")
             if should_quit:
@@ -229,19 +233,36 @@ def calculateWeight(word, green_string = "-----"):
         previous_letters.append(letter)
     return weight_sum
 
-def bestFirstGuess():
+def bestFirstGuess(best_guesses):
+    random.seed()
+    return best_guesses[int(random.random() * len(best_guesses))][0]
+
+def generateTopGuesses(count):
     five_letter_words_file = open("five_letter_words.txt")
+    top_guesses_file = open("top_guesses.txt", "a+")
+    top_guesses_file.truncate(0)
     maxWeight = 0
-    maxWord = ""
-    print("finding best first guess...")
+    top_guesses = []
+    # populate guesses with empty tuples
+    for guess in range(count):
+        top_guesses.append(("", 0))
+    #print("finding best first guess...")
     for word in five_letter_words_file:
         trimmed_word = word[:5]
         curr_weight = calculateWeight(trimmed_word)
-        if curr_weight > maxWeight:
-            maxWeight = curr_weight
-            maxWord = word
-    print("The best first guess is:", maxWord + ": " + str(maxWeight))
+        if curr_weight > top_guesses[count - 1][1]:
+            # word weight is higher than the lowest in the top guesses
+            top_guesses.pop()
+            top_guesses.append((trimmed_word, curr_weight))
+            top_guesses.sort(key=getKey, reverse=True)
+    #print("The top " + str(count) + " guesses are:")
+    #for guess in top_guesses:
+        #print(formatWordTupleString(guess[0], guess[1]))
     five_letter_words_file.close()
+    return top_guesses
+
+def formatWordTupleString(word, weight):
+    return word + ", " + str(weight)
 
 def main():
     print()
@@ -259,17 +280,28 @@ def main():
         print()
         print("-------------------------------------------------------------------------------------------------")
         print("|  Options:                                                                                     |")
-        print("|    Type \"first guess\" to get a good first guess.                                              |")
+        print("|    Type \"first guess\" to get a \"good\" first guess.                                              |")
         print("|    Type \"smart guess\" to generate a list of possible guesses given what you already know.     |")
         print("|    Type \"quit\" to quit.                                                                       |")
         print("-------------------------------------------------------------------------------------------------")
         print()
         usr_input = input().lower()
-
         if usr_input == "first guess":
-            bestFirstGuess()
+            top_guesses = generateTopGuesses(10)
+            print(bestFirstGuess(top_guesses))
         elif usr_input == "smart guess":
             makeGuesses()
+        elif usr_input == "snuh":
+            print()
+            print(" .d8888b.                    888      ")
+            print("d88P  Y88b                   888      ")
+            print("Y88b.                        888      ")
+            print(" \"Y888b.   88888b.  888  888 88888b.  ")
+            print("    \"Y88b. 888 \"88b 888  888 888 \"88b ")
+            print("      \"888 888  888 888  888 888  888 ")
+            print("Y88b  d88P 888  888 Y88b 888 888  888")
+            print(" \"Y8888P\"  888  888  \"Y88888 888  888 ")
+            print()
         elif usr_input == "quit":
             break
 
